@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/FityatulhaqRosyidi/sealix/app/internal/keygencmd"
-	"github.com/FityatulhaqRosyidi/sealix/app/internal/signcmd"
-	"github.com/FityatulhaqRosyidi/sealix/app/internal/trustcmd"
-	"github.com/FityatulhaqRosyidi/sealix/app/internal/verifycmd"
+	"github.com/yauyau7725/sealix/app/internal/keygencmd"
+	"github.com/yauyau7725/sealix/app/internal/signcmd"
+	"github.com/yauyau7725/sealix/app/internal/trustcmd"
+	"github.com/yauyau7725/sealix/app/internal/verifycmd"
 )
 
 func Run(

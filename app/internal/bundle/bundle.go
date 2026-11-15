@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/FityatulhaqRosyidi/sealix/app/internal/jsonstrict"
+	"github.com/yauyau7725/sealix/app/internal/jsonstrict"
 )
 
 const MaxSize = 64 * 1024

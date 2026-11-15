@@ -11,9 +11,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/FityatulhaqRosyidi/sealix/app/internal/bundle"
-	"github.com/FityatulhaqRosyidi/sealix/app/internal/manifest"
-	"github.com/FityatulhaqRosyidi/sealix/app/internal/truststore"
+	"github.com/yauyau7725/sealix/app/internal/bundle"
+	"github.com/yauyau7725/sealix/app/internal/manifest"
+	"github.com/yauyau7725/sealix/app/internal/truststore"
 )
 
 type negativeFixture struct {

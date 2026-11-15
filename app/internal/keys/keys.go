@@ -12,7 +12,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/FityatulhaqRosyidi/sealix/app/internal/sigalg"
+	"github.com/yauyau7725/sealix/app/internal/sigalg"
 )
 
 func decodePEM(data []byte, label string) ([]byte, error) {

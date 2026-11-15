@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/FityatulhaqRosyidi/sealix/app/internal/result"
+	"github.com/yauyau7725/sealix/app/internal/result"
 )
 
 func validSampleManifest() Manifest {

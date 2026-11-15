@@ -2,7 +2,7 @@ package main
 
 import (
 	"os"
-	"github.com/FityatulhaqRosyidi/sealix/app/internal/cli"
+	"github.com/yauyau7725/sealix/app/internal/cli"
 )
 
 var version = "dev"

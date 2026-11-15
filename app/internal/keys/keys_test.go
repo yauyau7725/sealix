@@ -16,7 +16,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/FityatulhaqRosyidi/sealix/app/internal/sigalg"
+	"github.com/yauyau7725/sealix/app/internal/sigalg"
 )
 
 func mustEncodePublicPEM(t *testing.T, pub crypto.PublicKey, label string) []byte {

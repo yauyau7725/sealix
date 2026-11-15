@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/FityatulhaqRosyidi/sealix/app/internal/bundle"
-	"github.com/FityatulhaqRosyidi/sealix/app/internal/sigalg"
+	"github.com/yauyau7725/sealix/app/internal/bundle"
+	"github.com/yauyau7725/sealix/app/internal/sigalg"
 )
 
 func run(args ...string) (int, string, string) {

@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/FityatulhaqRosyidi/sealix/app/internal/keys"
-	"github.com/FityatulhaqRosyidi/sealix/app/internal/sigalg"
+	"github.com/yauyau7725/sealix/app/internal/keys"
+	"github.com/yauyau7725/sealix/app/internal/sigalg"
 )
 
 func runKeygen(args ...string) (int, string, string) {

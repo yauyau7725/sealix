@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/FityatulhaqRosyidi/sealix/app/internal/jsonstrict"
-	"github.com/FityatulhaqRosyidi/sealix/app/internal/result"
+	"github.com/yauyau7725/sealix/app/internal/jsonstrict"
+	"github.com/yauyau7725/sealix/app/internal/result"
 )
 
 const (

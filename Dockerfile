@@ -16,7 +16,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
 
 FROM scratch
 
-ARG SOURCE_REPO=https://github.com/FityatulhaqRosyidi/sealix
+ARG SOURCE_REPO=https://github.com/yauyau7725/sealix
 
 LABEL org.opencontainers.image.source=${SOURCE_REPO}
 
