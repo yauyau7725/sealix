@@ -1,8 +1,9 @@
 temp.go
-*.key.pem
+*.pem
 *.bundle.json
 *.marker
 .env
 .DS_Store
 /out/
 /dist/
+*.exe
