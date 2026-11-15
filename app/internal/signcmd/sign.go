@@ -11,9 +11,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Yauyau7725/sealix/app/internal/bundle"
-	"github.com/Yauyau7725/sealix/app/internal/keys"
-	"github.com/Yauyau7725/sealix/app/internal/manifest"
+	"github.com/yauyau7725/sealix/app/internal/bundle"
+	"github.com/yauyau7725/sealix/app/internal/keys"
+	"github.com/yauyau7725/sealix/app/internal/manifest"
 )
 
 func Run(args []string, out io.Writer, errOut io.Writer) int {

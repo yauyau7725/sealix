@@ -12,8 +12,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Yauyau7725/sealix/app/internal/keys"
-	"github.com/Yauyau7725/sealix/app/internal/truststore"
+	"github.com/yauyau7725/sealix/app/internal/keys"
+	"github.com/yauyau7725/sealix/app/internal/truststore"
 )
 
 func invoke(args ...string) (int, string, string) {

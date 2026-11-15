@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Yauyau7725/sealix/app/internal/keys"
+	"github.com/yauyau7725/sealix/app/internal/keys"
 )
 
 func sampleStore(t *testing.T) (*Store, string) {
