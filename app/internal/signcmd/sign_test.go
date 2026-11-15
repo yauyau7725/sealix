@@ -10,10 +10,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/dyauyau7725/sealix/app/internal/bundle"
-	"github.com/dyauyau7725/sealix/app/internal/keys"
-	"github.com/dyauyau7725/sealix/app/internal/manifest"
-	"github.com/dyauyau7725/sealix/app/internal/sigalg"
+	"github.com/yauyau7725/sealix/app/internal/bundle"
+	"github.com/yauyau7725/sealix/app/internal/keys"
+	"github.com/yauyau7725/sealix/app/internal/manifest"
+	"github.com/yauyau7725/sealix/app/internal/sigalg"
 )
 
 func runSign(args ...string) (int, string, string) {
