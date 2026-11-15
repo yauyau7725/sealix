@@ -1,0 +1,15 @@
+U02	ARTIFACT_MISMATCH	1	flip byte artifact
+U03	ARTIFACT_MISMATCH	1	append or remove byte artifact
+U04	INVALID_SIGNATURE	1	edit manifest canonical without resigning
+U05	INVALID_SIGNATURE	1	flip signature bit
+U06	KEY_NOT_TRUSTED	1	empty trust store
+U07	KEY_NOT_TRUSTED	1	key allowed only for other package
+U08	METADATA_MISMATCH	1	wrong expected version
+U09	METADATA_MISMATCH	1	rename artifact
+U10a	FORMAT_ERROR	1	duplicate JSON key
+U10b	FORMAT_ERROR	1	wrong JSON type
+U10c	FORMAT_ERROR	1	invalid Base64
+U10d	FORMAT_ERROR	1	manifest larger than 16 KiB
+U11	UNSUPPORTED_ALGORITHM	1	unsupported algorithm
+U12	KEY_NOT_TRUSTED	1	other signer key
+U13	OK	0	reordered bundle JSON fields and whitespace

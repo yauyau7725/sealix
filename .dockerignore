@@ -1,0 +1,8 @@
+.git
+.github
+/docs
+/test
+*.key.pem
+*.bundle.json
+*.marker
+/dist

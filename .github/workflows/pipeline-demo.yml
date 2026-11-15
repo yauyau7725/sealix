@@ -1,0 +1,162 @@
+
+name: Release verification demo
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_digest:
+        description: 'Digest image publik, contoh sha256:...'
+        required: true
+      package:
+        description: 'Nama paket yang diizinkan trust store'
+        default: contoh-app
+        required: true
+      version:
+        description: 'Versi paket'
+        default: 1.0.0
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create release artifact
+        run: printf 'sealix release demo\n' > app.bin
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: artifact-to-sign
+          path: app.bin
+          if-no-files-found: error
+
+  sign:
+    needs: prepare
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: artifact-to-sign
+
+      - name: Sign using dedicated secret
+        shell: bash
+        env:
+          SIGNING_KEY_PEM: ${{ secrets.SIGNING_KEY_PEM }}
+          DIGEST: ${{ inputs.image_digest }}
+          REPOSITORY: ${{ github.repository }}
+          PKG: ${{ inputs.package }}
+          VER: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+
+          [[ "$DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]
+          test -n "$SIGNING_KEY_PEM"
+
+          image="ghcr.io/${REPOSITORY,,}@${DIGEST}"
+
+          umask 077
+          keyfile="$(mktemp "$RUNNER_TEMP/sealix-key.XXXXXX")"
+          trap 'rm -f "$keyfile"' EXIT
+
+          printf '%s' "$SIGNING_KEY_PEM" > "$keyfile"
+
+          docker run --rm \
+            --network none \
+            --read-only \
+            --user "$(id -u):$(id -g)" \
+            --mount "type=bind,src=$PWD,dst=/work" \
+            --mount "type=bind,src=$keyfile,dst=/key.pem,readonly" \
+            "$image" sign \
+            --file /work/app.bin \
+            --package "$PKG" \
+            --version "$VER" \
+            --key /key.pem \
+            --out /work/release.bundle.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signed-release
+          path: |
+            app.bin
+            release.bundle.json
+          if-no-files-found: error
+
+  verify:
+    needs: sign
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: signed-release
+          path: release
+
+      - name: Verify without private key
+        shell: bash
+        env:
+          DIGEST: ${{ inputs.image_digest }}
+          REPOSITORY: ${{ github.repository }}
+          PKG: ${{ inputs.package }}
+          VER: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+
+          [[ "$DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]
+          test -f ci/trust.json
+
+          image="ghcr.io/${REPOSITORY,,}@${DIGEST}"
+
+          docker run --rm \
+            --network none \
+            --read-only \
+            --user "$(id -u):$(id -g)" \
+            --mount "type=bind,src=$PWD/release,dst=/release,readonly" \
+            --mount "type=bind,src=$PWD/ci/trust.json,dst=/trust.json,readonly" \
+            "$image" verify \
+            --file /release/app.bin \
+            --bundle /release/release.bundle.json \
+            --trust-store /trust.json \
+            --package "$PKG" \
+            --version "$VER" \
+            --json | tee verification.json
+
+          jq -e '.status == "OK" and .valid == true' verification.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-release
+          path: |
+            release/app.bin
+            verification.json
+          if-no-files-found: error
+
+  deploy:
+    needs: verify
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: verified-release
+
+      - name: Publish marker only when verified
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          jq -e '.status == "OK" and .valid == true' verification.json
+          test -f release/app.bin
+
+          sha256sum release/app.bin > deployed.marker
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deploy-evidence
+          path: deployed.marker
+          if-no-files-found: error

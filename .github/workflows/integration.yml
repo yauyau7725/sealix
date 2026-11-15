@@ -1,0 +1,69 @@
+
+name: Container integration C01-C05
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_digest:
+        description: 'Immutable image digest sha256:...'
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        algorithm:
+          - rsa-pss-sha256
+          - ecdsa-p256-sha2
+          - ed25519
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate image digest
+        shell: bash
+        env:
+          DIGEST: ${{ inputs.image_digest }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          [[ "$DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]
+
+          echo "IMAGE=ghcr.io/${REPOSITORY,,}@${DIGEST}" \
+            >> "$GITHUB_ENV"
+
+      - name: Run C01-C05 on published image
+        shell: bash
+        env:
+          ALGORITHM: ${{ matrix.algorithm }}
+        run: |
+          set -euo pipefail
+
+          bash test/integration/run.sh \
+            "$IMAGE" "$ALGORITHM" "out/$ALGORITHM"
+
+      - name: Record run URL
+        if: always()
+        shell: bash
+        env:
+          ALGORITHM: ${{ matrix.algorithm }}
+        run: |
+          mkdir -p "out/$ALGORITHM"
+
+          printf '%s\n' \
+            "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            > "out/$ALGORITHM/run-url.txt"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidence-${{ matrix.algorithm }}
+          path: out/${{ matrix.algorithm }}/
+          if-no-files-found: warn
